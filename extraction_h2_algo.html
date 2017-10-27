@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<title>Cours introduction à l'algorithmique - Fabien Torre</title>
+<meta charset="utf-8" />
+<meta name="description" content="Introduction à l'algorithmique par Fabien Torre. Cours d'initiation à l'algorithmique : langage de description, utilisation de boucles, types abstraits, algorithmes sur les tableaux, notions de complexité et de calculabilité." />
+<meta name="keywords" content="Fabien Torre, Torre, Fabien, cours, supports, supports de cours, notes de cours, poly, polycopiés, algo, algorithmique, algorithme, boucles, tableaux, tri" />
+<meta name="author" content="Fabien Torre" />
+<meta name="viewport" content="initial-scale=1.0,width=device-width" />
+<link rel="author" href="https://plus.google.com/102179226185951491072" />
+<link rel="publisher" href="https://plus.google.com/102179226185951491072" />
+<link rel="shortcut icon" type="image/x-icon" href="include/ft.ico" />
+
+
+<script>
+<!-- exercice : extraire les h2 pour en afficher la liste -->
+
+function Extraction_des_h2 () {
+
+	var sommaire = document.getElementById('sommaireh2');
+	
+	var titres = document.getElementsByTagName('h2');
+	for (var titre of titres) {
+		sommaire.innerHTML += titre.innerHTML;
+		sommaire.innerHTML += '<br/>';
+	}
+}
+
+function vider_sommaire () {
+var sommaire = document.getElementById('sommaireh2');
+sommaire.innerHTML='';
+}
+
+</script>
+
+
+</head>
+
+
+<body>
+<button onclick="Extraction_des_h2()">Extraction des titres de section</button>
+<button onclick="vider_sommaire()">Effacer sommaire</button>
+
+<nav id="sommaireh2"></nav> <!-- ne fonctionne pas avec syntaxe de type balise autofermante -->
+
+<div id="world">
+<header>
+<h1>site de Fabien Torre, université de Lille</h1>
+</header>
+<hr /><div id="smallcontentwrap">
+<main>
+<h1>Introduction à l'algorithmique</h1>
+<div class="presentation">
+Cours d'initiation à l'algorithmique&nbsp;: langage de description, utilisation de boucles, types abstraits, algorithmes sur les tableaux, notions de complexité et de calculabilité.
+</div>
+
+<article>
+
+
+<aside class="citation">
+Computer Science is not about computers,<br />
+any more than astronomy is about telescopes.
+<br /><span class="personne">Edsger Wybe Dijkstra</span>.
+<br />
+</aside>
+<hr />
+
+
+<nav class="smalltoc">
+<h1><span>&nbsp;Sommaire&nbsp;</span></h1>
+<ul>
+<li> <a href="#intro">Présentation</a></li>
+<li> <a href="#langage">Langage de description</a></li>
+<li> <a href="#abstraits">Types abstraits</a></li>
+<li> <a href="#tableaux">Algorithmes sur les tableaux</a></li>
+<li> <a href="#dur">Complexité exponentielle et indécidabilité</a></li>
+<li> <a href="#conclusion">Conclusion</a></li>
+</ul>
+</nav>
+
+<section>
+<h2 id="intro">Présentation</h2>
+
+<h3>Présentation informelle</h3>
+
+<p>
+Considérons les étapes qui interviennent dans la résolution problème
+quelconque :
+</p>
+
+<ol type="1">
+<li> concevoir une procédure qui une à fois appliquée amènera à une
+ solution du problème ;
+</li>
+
+<li> résoudre effectivement le problème en appliquant cette
+méthode.</li>
+
+</ol>
+
+<p>
+Le résultat du premier point sera nommé un <em>algorithme</em>.
+Quant au deuxième point, c'est-à-dire la mise en pratique de
+l'algorithme, nous l'appellerons un <em>processus</em>.
+</p>
+
+<p>
+Ces notions sont très répandues dans la vie courante. Un algorithme
+peut par exemple y prendre la forme :
+</p>
+
+<ul>
+<li> d'une recette de cuisine,</li>
+
+<li> d'un mode d'emploi,</li>
+
+<li> d'une notice de montage,</li>
+
+<li> d'une partition musicale,</li>
+
+<li> d'un texte de loi,</li>
+
+<li> d'un itinéraire routier.</li>
+
+</ul>
+
+<p>
+Dans le cas particulier de l'informatique, une étape supplémentaire
+vient se glisser entre la conception de l'algorithme et sa réalisation
+à travers un processus : l'algorithme doit être rendu compréhensible
+par la machine que nous allons utiliser pour résoudre effectivement le
+problème. Le résultat de la traduction de l'algorithme dans un langage
+connu de la machine est appelé un <em>programme</em>.
+</p>
+
+
+<h3>Rapide historique</h3>
+
+<p>
+C'est un mathématicien perse du 8ème siècle, Al-Khawarizmi, qui a
+donné son nom à la notion d'algorithme.
+Son besoin était de traduire un livre de mathématiques venu d'Inde
+pour que les résultats et les méthodes exposés dans ce livre se répandent
+dans le monde arabe puis en Europe. Les résultats devaient donc être
+compréhensibles par tout autre mathématicien et les méthodes
+applicables, sans ambiguïté.
+</p>
+
+<p>
+En particulier, ce livre utilisait une numérotation de position, ainsi
+que le chiffre zéro que ce type de représentation des nombres rend
+nécessaire.
+Par ailleurs, le titre de ce livre devait être repris pour désigner
+une branche des mathématiques, l'algèbre.
+</p>
+
+<p>
+Si l'origine du mot <em>algorithme</em> est très ancienne, la notion
+même d'algorithme l'est plus encore : on la sait présente chez les 
+babyloniens, 1800 ans avant JC.
+</p>
+
+<p>
+Une tablette assyrienne provenant de la bibliothèque de Assourbanipal
+et datée de -640 expose une recette pour obtenir des pigments bleus
+(notons que pour avoir un algorithme satisfaisant,
+il faudrait préciser ici les temps de cuisson !) :
+</p>
+
+<div class="exemple">
+<ul>
+<li>tu ajouteras à un <em>mana</em> de bon <em>tersitu</em>
+un tiers de <em>mana</em> de verre <em>sirsu</em> broyé,
+un tiers de <em>mana</em> de sable, cinq <em>kisal</em> de craie,</li>
+<li>tu broieras encore,</li>
+<li>tu le recueilleras dans un moule, en le fermant avec un moule réplique,</li>
+<li>tu le placeras dans les ouvreaux du four,</li>
+<li>il rougeoira et <em>uknû merku</em> en sortira.</li>
+</ul>
+</div>
+
+<p>
+En résumé, il doit être bien clair que cette notion d'algorithme 
+dépasse, de loin, l'informatique et les ordinateurs.
+Nécessite un vocabulaire partagé, des opérations de base maîtrisées par tous
+et de la précision.
+</p>
+
+<!--
+
+1837 machine universelle de Babage
+
+et avant : Nexton ?
+
+-->
+
+
+
+<nav class="smalltoc">
+<h1><span>&nbsp;Sommaire&nbsp;</span></h1>
+<ul>
+<li> <a href="#intro">Présentation</a></li>
+<li> <a href="#langage">Langage de description</a></li>
+<li> <a href="#abstraits">Types abstraits</a></li>
+<li> <a href="#tableaux">Algorithmes sur les tableaux</a></li>
+<li> <a href="#dur">Complexité exponentielle et indécidabilité</a></li>
+<li> <a href="#conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</section>
+
+
+<section>
+<h2 id="langage">Langage de description</h2>
+
+<h3>Premiers éléments</h3>
+
+<h4>Instructions de sorties</h4>
+
+<p>
+On se donne une instruction <em>Écrire</em> pour afficher du texte,
+ainsi qu'une instruction <em>ALaLigne</em> pour pousuivre
+l'affichage à la ligne suivante.
+</p>
+
+
+<h4>Patron d'un algorithme</h4>
+
+<p>
+Le patron général est le suivant :
+</p>
+<blockquote><pre>
+Algorithme NomAlgorithme
+Début
+  ... actions
+Fin
+</pre></blockquote>
+<p>
+La première ligne, appelée <em>profil</em> donne essentiellement
+le nom de l'algorithme. On trouve ensuite un délimiteur de début
+puis les différentes actions composant l'algorithme et enfin
+un délimiteur de fin.
+</p>
+<p>
+Ainsi, l'algorithme suivant est valide :
+</p>
+<blockquote><pre>
+Algorithme Bonjour
+Début
+  Écrire('Hello world !!!')
+  ALaLigne
+Fin
+</pre></blockquote>
+
+<p>
+Évoquer l'appel à un tel algorithme dans un <em>algorithme principal</em>.
+</p>
+
+
+
+<h3> Variables et types</h3>
+
+<p>
+Une variable est constitué d'un nom et d'un contenu, ce contenu
+étant d'un certain type.
+Les types différents : booléen, caractère, chaîne de caractères,
+nombre entier, nombre réel, etc.
+</p>
+
+<p>
+Pour la clarté de l'algorithme, il peut être intéressant de déclarer les variables utilisées
+et leur type au tout début.
+Quand l'algorithme sera traduit en programme cette déclaration aura d'autres avantages :
+réservation de l'espace mémoire correspondant au type,
+possibilité de vérifier le programme du point de vue de la cohérence des types, etc.
+</p>
+
+<p>
+Affectation souvent symbolisée par une flèche vers la gauche (←).
+</p>
+<p>
+Expressions, évaluation, etc.
+</p>
+
+<h4>Nouveau patron d'un algorithme</h4>
+
+<p>
+Nous allons maintenant préciser les variables utilisées par l'algorithme
+et leurs types, en distingant les paramètres externes et les variables
+internes à l'algorithme.
+Ainsi, le patron d'un algorithme devient 
+</p>
+<blockquote><pre>
+Algorithme NomAlgorithme (paramètres...)
+Variable ...
+Début
+  ... actions
+Fin
+</pre></blockquote>
+
+
+
+
+<h3>Instructions conditionnelles et itératives</h3>
+
+<p>
+Le <em>Si Alors Sinon</em> va permettre de conditionner l'exécution
+de certaines instructions.
+</p>
+
+<p>
+Le rôle des boucles est d'itérer un bloc d'instructions,
+soit un nombre précis de fois,
+soit relativement à une condition.
+</p>
+
+
+<h4>Si Alors Sinon</h4>
+
+<blockquote><pre>
+Algorithme QueFaireCeSoir
+Début
+  Si Pluie
+  Alors
+    MangerPlateauTélé
+    SeCoucherTot
+  Sinon
+    MangerAuRestaurant
+    AllerAuCinema
+  Fin si
+Fin
+</pre></blockquote>
+
+
+<h4>Boucle Fois</h4>
+
+<blockquote><pre>
+  Fois 3 faire
+    Avancer
+  Fin Fois
+</pre></blockquote>
+
+
+<h4>Boucle <em>Tant que</em> et <em>Répéter</em></h4>
+
+<blockquote><pre>
+Algorithme JusquAuMur
+Début
+  Tant que Non(DevantMur) faire
+    Avancer
+  Fin tant que
+Fin
+</pre></blockquote>
+
+
+<blockquote><pre>
+Algorithme JusquAuMurVersionRépéter
+Début
+  Répéter
+    Avancer
+  jusqu'à DevantMur
+Fin
+</pre></blockquote>
+
+<p>
+&Agrave; noter que, contrairement à la boucle <em>tant que</em>,
+on passe toujours au moins une fois dans une boucle <em>répéter</em>.
+Ainsi, dans l'exemple ci-dessus, on avancera forcément d'une case...
+il conviendrait donc de tester si l'on n'est pas devant un mur
+avant d'utiliser cet algorithme.
+</p>
+
+
+
+
+<h4>Boucle Pour</h4>
+
+<p>
+Dotés des variables, nous pouvons maintenant écrire un nouveau type
+de boucle, la boucle <em>pour</em> :
+</p>
+
+<blockquote><pre>
+Algorithme CompteJusqueCent
+Début
+  Pour i ← 1 à 100 faire
+    Écrire(i)
+    ALaLigne
+  Fin Pour
+Fin
+</pre></blockquote>
+
+<p>
+Lorsque l'on sait exactement combien de fois on doit itérer
+un traitement, c'est l'utilisation de cette boucle qui doit être 
+privilégiée.
+</p>
+
+
+
+
+<p>
+Par exemple,
+</p>
+<blockquote><pre>
+Algorithme DessineEtoiles (n : entier)
+Variable i : entier
+Début
+  Pour i ← 1 à n faire
+    Écrire('*')
+  Fin pour
+Fin
+</pre></blockquote>
+
+
+
+
+
+
+
+
+<h4>Comparaisons des boucles pour un problème simple</h4>
+<p>
+On reprend l'exemple précédent de la boucle <em>pour</em>
+</p>
+<blockquote><pre>
+Algorithme CompteJusqueCentVersionPour
+Variable i : entier
+Début
+  Pour i ← 1 à 100 faire
+    Écrire(i)
+    ALaLigne
+  Fin Pour
+Fin
+</pre></blockquote>
+<p>
+et on écrit des algorithmes qui produisent la même sortie
+(les nombres de 1 à 100) mais en utilisant les différentes 
+boucles.
+</p>
+<p>
+D'abord, avec la boucle <em>tant que</em> (il faut initialiser <em>i</em>
+avant la boucle, et l'augmenter de 1 à chaque passage) :
+</p>
+<blockquote><pre>
+Algorithme CompteJusqueCentVersionTQ
+Variable i : entier
+Début
+  i ← 1
+  Tant que (i ≤ 100) faire
+    Écrire(i)
+    ALaLigne
+    i ← i+1
+  Fin tant que
+Fin
+</pre></blockquote>
+
+<p>
+De même avec la boucle <em>répéter</em> (noter que la condition
+d'arrêt est ici la négation de la condition du <em>tant que</em>):
+</p>
+<blockquote><pre>
+Algorithme CompteJusqueCentVersionRepeter
+Variable i : entier
+Début
+  i ← 1
+  Répéter
+    Écrire(i)
+    ALaLigne
+    i ← i+1
+  Jusqu'à (i > 100)
+Fin
+</pre></blockquote>
+
+<p>
+Enfin, en utilisant la récursivité, on obtient :
+</p>
+<blockquote><pre>
+Algorithme CompteJusqueCentRecursif (n : entier)
+Début
+  Si (n ≤ 100)
+  Alors
+    Écrire(n)
+    ALaLigne
+    CompteJusqueCentRecursif(n+1)
+  Fin si
+Fin
+</pre></blockquote>
+
+
+<h4>Algorithmes pour les figures géométriques</h4>
+
+
+
+
+
+<nav class="smalltoc">
+<h1><span>&nbsp;Sommaire&nbsp;</span></h1>
+<ul>
+<li> <a href="#intro">Présentation</a></li>
+<li> <a href="#langage">Langage de description</a></li>
+<li> <a href="#abstraits">Types abstraits</a></li>
+<li> <a href="#tableaux">Algorithmes sur les tableaux</a></li>
+<li> <a href="#dur">Complexité exponentielle et indécidabilité</a></li>
+<li> <a href="#conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</section>
+
+<section>
+<h2 id="abstraits">Types abstraits</h2>
+
+<h3>Formalisme</h3>
+
+<p>
+opérations et signature
+</p>
+
+<p>
+constructeurs, accesseurs, modifieurs, testeurs, copieurs, afficheurs
+</p>
+
+<p>
+pré-conditions et axiomes
+</p>
+
+<p>
+opérations complexes
+</p>
+
+
+
+
+<h3>Le type abstrait « Entier »</h3>
+
+<div class="exemple"><pre>
+<strong>Type abstrait « Entier »</strong>
+Utilise « Booléen »
+
+<strong>Constructeurs</strong>
+zero : ∅ → Entier
+succ : Entier → Entier
+prec : Entier → Entier
+<em>pré-condition pour prec(n) : estnul(n) est faux</em>
+
+<strong>Testeur</strong>
+estnul : Entier → Booléen
+
+<strong>Afficheur</strong>
+afficheentier : Entier → ∅
+
+<strong>Axiomes</strong>
+estnul(zero())  = vrai
+estnul(succ(n)) = faux
+succ(prec(n))   = n
+prec(succ(n))   = n
+</pre></div>
+
+<p>
+Avec ce type abstrait, nous sommes capables de définir l'addition
+et la multiplication, indépendamment de l'implémentation de ce type.
+</p>
+
+
+<div class="exemple"><pre>
+Algorithme plus (n,m : entiers)
+Début
+    Tant que non(est_nul(n))
+        m ← succ(m)
+        n ← prec(n)
+    Fin TQ
+    Retourner m
+
+
+Algorithme fois (n,m : entiers)
+Début
+    s ← zero()
+    Tant que non(est_nul(n))
+        s ← plus(s,m)
+        n ← prec(n)
+    Fin TQ
+    Retourner s
+Fin
+</pre></div>
+
+
+<h3>Le type abstrait « Pile »</h3>
+
+<div class="exemple"><pre>
+<strong>Type abstrait « Pile »</strong>
+Utilise « Booléen » et « Élément »
+
+<strong>Constructeurs</strong>
+pilevide : ∅ → Pile
+ajoute : Élément × Pile → Pile
+
+<strong>Accesseur</strong>
+sommet : Pile → Élément
+<em>pré-condition pour sommet(p) : estvide(p) est faux</em>
+
+<strong>Modifieur</strong>
+depile : Pile → Pile
+<em>pré-condition pour depile(p) : estvide(p) est faux</em>
+
+<strong>Testeur</strong>
+estvide : Pile → Booléen
+
+<strong>Afficheur</strong>
+affichepile : Pile → ∅
+
+<strong>Copieur</strong>
+copiepile : Pile → Pile
+
+<strong>Axiomes</strong>
+estvide(pilevide())  = vrai
+estvide(ajoute(e,p)) = faux
+sommet(ajoute(e,p))  = e
+depile(ajoute(e,p))  = p
+</pre></div>
+
+<p>
+Un algorithme possible basé sur ce type :
+</p>
+
+<div class="exemple"><pre>
+Algorithme inversepile (p : Pile)
+Début
+    q ← copiepile(p)
+    r ← pilevide()
+    Tant que non(estvide(q))
+        ajoute(sommet(q),r)
+        depile(q)
+    Fin TQ
+    Retourner r
+Fin
+</pre></div>
+
+<h3>Type abstrait : le cas des types <em>produits</em></h3>
+
+<p>
+Forme générale de ces types...
+</p>
+
+<p>
+Sur un exemple : le type abstrait « Étudiant ».
+</p>
+
+<div class="exemple"><pre>
+<strong>Type abstrait « Étudiant »</strong>
+Utilise « Entier » et « Texte »
+
+<strong>Constructeurs</strong>
+créer_étudiant : Texte × Texte × Texte → Étudiant
+
+<strong>Accesseurs</strong>
+nom_étudiant            : Étudiant         → Texte
+prénom_étudiant         : Étudiant         → Texte
+naissance_étudiant      : Étudiant         → Texte
+noteinfo_étudiant       : Étudiant         → Entier
+notemath_étudiant       : Étudiant         → Entier
+notediscipline_étudiant : Texte × Étudiant → Entier
+
+<strong>Modifieur</strong>
+modifier_noteinfo : Étudiant × Entier → Étudiant
+modifier_notemath : Étudiant × Entier → Étudiant
+
+<strong>Afficheur</strong>
+afficher_étudiant : Étudiant → ∅
+
+<strong>Axiomes</strong>
+nom_étudiant(créer_étudiant(n,p,d))        = n
+prénom_étudiant(créer_étudiant(n,p,d))     = p
+naissance_étudiant(créer_étudiant(n,p,d))  = d
+noteinfo_étudiant(modifier_noteinfo(e,n))  = n
+notemath_étudiant(modifier_notemath(e,n))  = n
+
+notediscipline_étudiant('info',modifier_noteinfo(e,n)) = n
+notediscipline_étudiant('math',modifier_notemath(e,n)) = n
+</pre></div>
+
+
+
+<h3>Le type abstrait « Tableau »</h3>
+
+<p>Première version.</p>
+
+<div class="exemple"><pre>
+<strong>Type abstrait « Tableau »</strong>
+Utilise « Entier » et « Élément »
+
+<strong>Constructeurs</strong>
+créer_tableau : Entier → Tableau
+
+<strong>Accesseurs</strong>
+contenu : Tableau × Entier → Élément
+taille  : Tableau → Entier
+<em>pré-condition pour contenu(t,n) : 1 ≤ n ≤ taille(t)</em>
+
+<strong>Modifieur</strong>
+fixecase :  Tableau × Entier × Élément → Tableau
+<em>pré-condition pour fixecase(t,n,e) : 1 ≤ n ≤ taille(t)</em>
+
+<strong>Afficheur</strong>
+affichetableau : Tableau → ∅
+
+<strong>Copieur</strong>
+copietableau : Tableau → Tableau
+
+<strong>Axiomes</strong>
+taille(créer_tableau(n))   = n
+contenu(fixecase(t,n,e),n) = e
+</pre></div>
+
+
+
+<p>Seconde version avec la notation <em>crochets</em>
+plus proche des langages de programmation.</p>
+
+<div class="exemple"><pre>
+<strong>Type abstrait « Tableau »</strong>
+Utilise « Entier » et « Élément »
+
+<strong>Constructeurs</strong>
+créer_tableau : Entier → Tableau
+
+<strong>Accesseurs</strong>
+_[_] : Tableau × Entier → Élément
+taille  : Tableau → Entier
+<em>pré-condition pour contenu(t,n) : 1 ≤ n ≤ taille(t)</em>
+
+<strong>Modifieur</strong>
+_[_] = _ :  Tableau × Entier × Élément → Tableau
+<em>pré-condition pour t[n]=e : 1 ≤ n ≤ taille(t)</em>
+
+<strong>Afficheur</strong>
+affichetableau : Tableau → ∅
+
+<strong>Copieur</strong>
+copietableau : Tableau → Tableau
+
+<strong>Axiomes</strong>
+taille(créer_tableau(n))   = n
+contenu(fixecase(t,n,e),n) = e
+</pre></div>
+
+
+
+
+
+<nav class="smalltoc">
+<h1><span>&nbsp;Sommaire&nbsp;</span></h1>
+<ul>
+<li> <a href="#intro">Présentation</a></li>
+<li> <a href="#langage">Langage de description</a></li>
+<li> <a href="#abstraits">Types abstraits</a></li>
+<li> <a href="#tableaux">Algorithmes sur les tableaux</a></li>
+<li> <a href="#dur">Complexité exponentielle et indécidabilité</a></li>
+<li> <a href="#conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</section>
+
+
+
+<section>
+<h2 id="tableaux">Algorithmes sur les tableaux</h2>
+
+<h3>Algorithmes de base</h3>
+
+<h4>Parcours d'un tableau</h4>
+
+<blockquote>
+<pre>
+Algorithme AfficheTableau (t : tableau)
+{ Affiche tous les éléments d'un tableau }
+Variable i : entier
+Début
+  Pour i ← 1 à taille(t) faire
+    Écrire(t[i])
+  Fin Pour
+Fin
+</pre></blockquote>
+<!--
+<blockquote>
+<pre>
+Algorithme AfficheTableauEnHTML (t : tableau)
+{ Affiche les éléments d'un tableau sous forme de liste HTML }
+Variable i : entier
+Début
+  Écrire("&lt;ul&gt;")
+  Pour i ← 1 à taille(t) faire
+    Écrire("&lt;li&gt;")
+    Écrire(t[i])
+    Écrire("&lt;/li&gt;")
+  Fin Pour
+  Écrire("&lt;/ul&gt;")
+Fin
+</pre>
+</blockquote>
+-->
+
+<h4>Recherche des plus petit et grand éléments d'un tableau</h4>
+
+<blockquote>
+<pre>
+Algorithme Maximum (t : tableau d'entiers)
+{ Recherche l'élément le plus grand d'un tableau de taille n non nulle }
+Variables i, max : entier
+Début
+  max ← t[1]
+  Pour i ← 2 à taille(t) faire
+    Si (t[i] &gt; max)
+    Alors max ← t[i]
+    Fin si
+  Fin Pour
+  Écrire(max)
+Fin
+
+</pre></blockquote>
+
+Déroulement du programme sur le tableau
+
+
+<table>
+<tr><td>4</td>
+<td>2</td>
+<td>5</td>
+<td>1</td>
+<td>3</td>
+</tr></table>
+
+<br />
+
+<table>
+<tr><th>i</th><th>max</th></tr>
+<tr><td>-</td><td class="nombre">4</td></tr>
+<tr><td>2</td><td class="nombre">4</td></tr>
+<tr><td>3</td><td class="nombre">5</td></tr>
+<tr><td>4</td><td class="nombre">5</td></tr>
+<tr><td>5</td><td class="nombre">5</td></tr>
+</table>
+
+<p>
+et l'algorithme affiche la valeur 5
+</p>
+
+<p>
+Pour mesurer la complexité d'un algorithme, il faut tout d'abord
+désigner une ou plusieurs opérations élémentaires utilisées par
+l'algorithme. Dans le cas de la recherche du maximum d'un tableau, ces
+opérations pourront être :
+</p>
+
+<ul>
+<li> la comparaison entre le maximum connu et un élément du tableau
+ (<code>t[i] &gt; max</code>) ;
+</li>
+
+<li> l'affectation d'une valeur à la variable contenant le maximum
+ (<code>max ← t[1]</code> et <code>max ← t[i]</code>).
+</li>
+
+</ul>
+
+<p>
+Mesurer la complexité de l'algorithme revient alors à compter le
+nombre de fois où ces opérations sont effectuées par l'algorithme.
+</p>
+
+<p>
+Ainsi, pour un tableau de taille <i>n</i>, l'algorithme <em>Maximum</em>
+effectue <i>n</i>-1 comparaisons.
+</p>
+
+<p>
+Naturellement, nous le voyons avec l'algorithme <em>Maximum</em> et le
+nombre d'affectations qu'il effectue, la complexité peut varier
+avec les données fournies en entrée. Nous allons donc
+distinguer trois notions de complexité : au mieux, au pire et en
+moyenne.
+</p>
+
+<ul>
+<li> Le cas le plus favorable pour notre algorithme <em>Maximum</em>
+ est le cas où le maximum du tableau se trouve en première position :
+ la variable <code>max</code> prend cette valeur au début et n'en change
+ plus ensuite. La complexité au mieux vaut donc 1.
+</li>
+
+<li> Au pire, le tableau est trié en ordre croissant et la variable
+ <code>max</code> doit changer de valeur avec chaque case. Le complexité au
+ pire vont donc <i>n</i>.
+</li>
+
+<li> La complexité en moyenne est plus difficile à calculer. Il ne
+ s'agit pas comme on pourrait le penser de la moyenne des complexités
+ au mieux et au pire. Nous pouvons observer que si nous choisissons
+ un tableau au hasard, il est beaucoup plus probable d'avoir un
+ tableau dont le maximum est en première place (cas le mieux) qu'un
+ tableau complètement trié (cas le pire). Par conséquent, la
+ complexité en moyenne est plus proche de 1 que de <i>n</i> et, en effet,
+ il est possible de montrer que cette complexité en moyenne vaut
+ <i>log</i>(<i>n</i>).
+</li>
+
+</ul>
+
+<p>
+En résumé, nous avons pour la complexité de l'algorithme
+<em>Maximum</em> en nombre d'affectations sur un tableau de taille <i>n</i> :
+</p>
+
+<table>
+<tr><th>au mieux</th>
+<th>en moyenne</th>
+<th>au pire</th>
+</tr>
+<tr><td>1</td>
+<td><i>log</i>(<i>n</i>)</td>
+<td><i>n</i></td>
+</tr></table>
+
+<p>
+(variation) On cherche la position du minimum dans un tableau
+et entre deux cases repérées par leurs numéros <i>d</i> (début)
+et <i>f</i> (fin):
+</p>
+
+<blockquote>
+<pre>
+Algorithme PositionMinimum (t : tableau d'entiers ; d,f : entier)
+Variable i,imin : entier
+Début
+  imin ← d
+  Pour i ← d+1 à f faire :
+    Si t[i] ≤ t[imin] alors
+      imin ← i
+    Fin si
+  Fin pour
+  Retourner imin
+Fin
+</pre></blockquote>
+
+
+<h4>Existence d'un élément dans un tableau</h4>
+
+<p>
+Algorithme général :
+</p>
+
+<blockquote>
+<pre>
+Algorithme Recherche (e : entier ; t : tableau d'entiers)
+{ Indique si l'élément e est présent ou non dans le tableau t }
+Variable i : entier
+Début
+  i ← 1;
+  Tant que (i ≤ taille(t)) et (t[i] ≠ e) faire
+    i ← i+1
+  Fin tant que
+  Si (i&gt;taille(t))
+  Alors Écrire("l'élément recherché n'est pas présent")
+  Sinon Écrire("l'élément recherché a été découvert")
+  Fin si
+Fin
+</pre></blockquote>
+
+<p>
+Mais si les éléments du tableau sont ordonnés,
+nous pour vous pouvons tirer parti de cette caractéristique.
+</p>
+
+<blockquote>
+<pre>
+Algorithme RechercheO (e : entier ; t : tableau d'entiers)
+Variable i  : entier
+         trouve : booléen
+Début
+  i ← 1
+  Tant que (i ≤ taille(t)) et (t[i] &lt; e) faire:
+    i ← i+1
+  Fin TQ
+  Si (i ≤ taille(t)) et (t[i]=e) alors
+    Écrire('oui')
+  Sinon
+    Écrire('non')
+  Fin si
+Fin
+</pre></blockquote>
+
+<p>
+ou encore mieux avec une recherche dite <em>dichotomique</em> :
+</p>
+
+<blockquote>
+<pre>
+Algorithme RechercheDichotomique
+(e : entier ; t : tableau d'entiers)
+Variable g,d,m  : entier
+         trouve : booléen
+Début
+  g ← 1
+  d ← taille(t)
+  trouve ← faux
+  Tant que (g ≤ d) et NON(trouve) Faire
+    m = (g+d) div 2
+    Si t[m] = e
+    Alors trouve ← vrai
+    Sinon Si e &lt; t[m]
+          Alors d ← m-1
+          Sinon g ← m+1
+          Fin si
+    Fin si
+  Fin Tant que
+  Si trouve
+  Alors Écrire('Trouvé !')
+  Sinon Écrire('Pas trouvé...')
+  Fin si
+  Écrire(m)
+Fin
+</pre></blockquote>
+
+<p>
+Pour continuer à bénéficier de ces algorithmes, il faut être capable
+d'insérer un nouvel élément directement à sa place
+(ici <i>n</i> indique le numéro de la dernière case):
+</p>
+
+<blockquote>
+<pre>
+Algorithme Insertion (t : tableau d'entiers ; n,e : entier)
+Variable i : entier
+Début
+  i ← n
+  Tant que (i&gt;0) et (t[i]&gt;e) faire :
+    t[i+1] ← t[i]
+    i ← i-1
+  Fin TQ
+  t[i+1] ← e
+Fin
+</pre></blockquote>
+
+<!--
+<h4>Retour sur le codage binaire : utilisation d'un tableau</h4>
+
+<p>
+Nous supposons ici que le tableau est numéroté à partir de zéro et que
+la case d'indice 0 contient le bit de poids faible.
+</p>
+
+<blockquote>
+<pre>
+Algorithme BinaireVersDécimal (t : tableau de 0 et de 1)
+{ Calcule la valeur décimale dénotée par un tableau de bits }
+Variables i, val, puiss : entier
+Début
+  val   ← 0;
+  puiss ← 1;
+  Pour i ← 0 à taille(t)-1 faire
+    val   ← val + puiss*t[i]
+    puiss ← 2*puiss
+  Fin Pour
+  Écrire(val)
+Fin
+</pre></blockquote><blockquote>
+<pre>
+Algorithme DécimalVersBinaire (e : entier)
+{ Calcule le codage binaire d'un entier e en utilisant un tableau de bits }
+Variable i : entier
+        t : tableau de 0 et de 1
+Début
+  i ← 0;
+  Tant que (e ≠ 0) faire
+    t[i] ← e modulo 2
+    e ← e div 2
+    i ← i+1
+  Fin tant que
+  AfficheTableau(t,i)
+Fin
+</pre></blockquote>
+
+-->
+
+
+
+<h3>Algorithmes de tri de tableaux</h3>
+
+<h4>Algorithme d'échange</h4>
+
+<blockquote>
+<pre>
+Algorithme Échange (t : tableau d'entiers ; i,j : entiers)
+{ Échange le contenu des cases i et j dans le tableau t }
+Variable pro : entier
+Début
+  pro  ← t[i]
+  t[i] ← t[j]
+  t[j] ← pro
+Fin
+</pre>
+</blockquote>
+
+
+
+
+<h4>Tri insertion</h4>
+
+<blockquote>
+<pre>
+Algorithme TriInsertion (t : tableau d'entiers)
+{ Trie par ordre croissant le tableau t }
+Variable i : entier
+Début
+  Pour i ← 2 à taille(t) faire
+    Insertion(t,i-1,t[i])
+  Fin Pour
+Fin
+</pre></blockquote>
+
+
+<h4>Tri extraction</h4>
+
+<p>
+Aussi nommé <em>tri sélection</em>,
+il utilise l'algorithme <em>PositionMinimum</em>
+</p>
+
+<ol type="1">
+<li> Extraire l'élément le plus petit du tableau à trier.</li>
+
+<li> Échanger cette valeur minimale avec la première case du tableau
+ à trier.</li>
+
+<li> Trier le reste du tableau (le tableau initial sans la première
+ case) de la même manière.</li>
+
+</ol>
+
+
+<blockquote>
+<pre>
+Algorithme TriExtraction (t : tableau d'entiers)
+{ Trie par ordre croissant le tableau t }
+Variables i,imin : entier
+Début
+  Pour i ← 1 à taille(t)-1 faire
+    imin ← PositionMinimum(t,i,taille(t))
+    Échange(t,i,imin)
+  Fin Pour
+Fin
+</pre></blockquote>
+
+
+<h4>Tri à bulles</h4>
+
+<blockquote>
+<pre>
+Algorithme TriBulles (t : tableau d'entiers)
+{ Trie par ordre croissant le tableau t contenant n éléments }
+Variables i,j : entier
+Début
+  Pour i ← 1 à taille(t)-1 faire
+    Pour j ← 1 à taille(t)-i faire
+      Si t[j] &gt; t[j+1]
+      Alors Échange(t,j,j+1)
+      Fin Si
+    Fin Pour
+  Fin Pour
+Fin
+</pre></blockquote>
+
+
+
+<h4>Principe du tri rapide</h4>
+
+<ol type="1">
+<li> Choisir un élément du tableau, élément que l'on nomme ensuite
+ <em>pivot</em>.</li>
+
+<li> Placer le pivot à sa position finale dans le tableau : les
+ éléments plus petits que lui sont à sa gauche, les plus grands à sa
+ droite.</li>
+
+<li> Trier, toujours à l'aide de cet algorithme, les sous-tableaux à
+ gauche et à droite du tableau.</li>
+
+</ol>
+
+<p>
+Pour que cette méthode soit la plus efficace possible, il faut que le
+pivot coupe le tableau en deux sous-tableaux de tailles comparables.
+</p>
+
+<p>
+Ainsi, si l'on choisit à chaque le plus petit élément du tableau comme
+pivot, on se retrouve dans le cas de l'algorithme de tri par
+extraction : la taille du tableau de diminue que d'un à chaque alors
+que le but est de diviser cette taille par deux.
+</p>
+
+<p>
+Cependant, bien choisir le pivot peut être coûteux en terme de
+complexité.
+</p>
+
+<p>
+Aussi on suppose que le tableau arrive dans un ordre aléatoire et on
+se contente de prendre le premier élément comme pivot.
+</p>
+
+<blockquote>
+<pre>
+Algorithme Placer (t,d,f):
+Variables l,r : entiers
+Début
+  l ← d+1
+  r ← f
+  Tant que l ≤ r:
+	Tant que t[r]&gt;t[d]
+		r ← r-1
+	Fin TQ
+	Tant que l ≤ f et t[l] ≤ t[d]
+		l ← l+1
+	Fin TQ
+	Si l&lt;r:
+		Échange(t,l,r)
+		r ← r-1
+		l ← l+1
+	Fin si
+  Fin TQ
+  Échange(t,d,r)
+  Renvoyer r
+Fin
+
+Algorithme TriRapideBoucle (t,d,f)
+Variable k : entier
+Début
+  Si d&lt;f alors
+	k ← Placer(t,d,f)
+	TriRapideBoucle(t,d,k-1)
+	TriRapideBoucle(t,k+1,f)
+  Fin si
+Fin
+
+Algorithm TriRapide (t,n)
+Début
+  TriRapideBoucle(t,1,n)
+Fin
+</pre></blockquote>
+
+
+
+
+
+
+
+
+<h4>Complexité</h4>
+
+Dans le but de mesurer la complexité d'un algorithme de tri,
+deux quantités sont à observer :
+
+<ul>
+<li> le nombre d'échanges effectués,</li>
+
+<li> le nombre de comparaisons effectuées entre éléments du tableau.</li>
+
+</ul>
+
+<p>
+tri à bulles en <i>n</i><sup>2</sup>.
+</p>
+
+<p>
+tri rapide en <i>n</i>.<i>log</i>(<i>n</i>).
+</p>
+
+
+
+
+<h4>Démonstrations en ligne</h4>
+
+<ul>
+<li> <a href="http://thomas.baudel.name/Visualisation/VisuTri/">VisuTri</a> de Thomas Baudel ;</li>
+<li> la page d'<a href="http://interstices.info/display.jsp?id=c_6973&amp;qs=id%3Djalios_5127">insterstices
+sur les algorithmes de tri</a> ;</li>
+<li> <a href="http://www.cs.ubc.ca/spider/harrison/Java/">page de démo de Jason Harrison</a>.</li>
+</ul>
+
+
+
+
+
+<nav class="smalltoc">
+<h1><span>&nbsp;Sommaire&nbsp;</span></h1>
+<ul>
+<li> <a href="#intro">Présentation</a></li>
+<li> <a href="#langage">Langage de description</a></li>
+<li> <a href="#abstraits">Types abstraits</a></li>
+<li> <a href="#tableaux">Algorithmes sur les tableaux</a></li>
+<li> <a href="#dur">Complexité exponentielle et indécidabilité</a></li>
+<li> <a href="#conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</section>
+
+
+
+<section>
+<h2 id="dur">Complexité exponentielle et indécidabilité</h2>
+
+<h3>Le problème du voyageur de commerce</h3>
+
+Il s'agit de visiter <i>n</i> villes en parcourant le moins de kilomètres
+possible.
+
+<p>
+<a href="http://www-sop.inria.fr/mefisto/java/tutorial1/node18.html">http://www-sop.inria.fr/mefisto/java/tutorial1/node18.html</a>
+</p>
+
+
+<h3>Complexité</h3>
+
+<p>
+complexité en 2<sup><i>n</i></sup> (exponentielle)
+</p>
+
+<h3>Intuition d'une explosion combinatoire</h3>
+
+<ul>
+<li> tours de Hanoï</li>
+<li> grains de blé sur l'échiquier</li>
+</ul>
+
+
+<h3>Réflexions</h3>
+
+<p>
+Loi de Moore : la rapidité des processeurs double tous les 18 mois.
+Dans le cas du voyageur de commerce, le fait de doubler la vitesse de
+calcul ne permet, dans le même temps, que de traiter une ville
+supplémentaire.
+</p>
+<p>
+Pourquoi l'algorithme Windows nécessite des machines de plus en plus
+puissantes ?
+</p>
+
+
+
+
+<h3>Indécidabilité du problème de l'arrêt</h3>
+
+<p>
+Commençons par donner un numéro à tous les algorithmes.
+</p>
+<p>
+Supposons qu'il existe un algorithme dont la spécification serait la
+suivante :
+</p>
+
+<blockquote>
+<pre>
+Algorithme TestArrêt (a,n : entier)
+{ Affiche 1 si l'algorithme de numéro a s'arrête sur l'entrée n,
+          0 sinon }
+</pre></blockquote>Nous allons montrer en raisonnant par l'absurde qu'un tel algorithme
+ne peut pas exister.<br />
+<br />
+Pour cela, considérons l'algorithme suivant qui n'est qu'une simple
+utilisation de l'algorithme <em>TestArrêt</em>.<br />
+<br />
+<blockquote>
+<pre>
+Algorithme Bizarre (e : entier)
+Variable i : entier
+Début
+  Répéter
+    i = TestArrêt(e,e)
+  Jusqu'à i = 0
+  Écrire(1)
+Fin
+</pre></blockquote>Nous constatons que cette algorithme <em>Bizarre</em> boucle à l'infini
+si l'algorithme de numéro <i>e</i> s'arrête ; par contre, <em>Bizarre</em>
+s'arrête si l'algorithme de numéro <i>e</i> boucle.<br />
+<br />
+Voyons où cela nous mène si nous fournissons à l'algorithme
+<em>Bizarre</em> son propre numéro :<em>Bizarre</em> boucle si
+<em>Bizarre</em> s'arrête, et <em>Bizarre</em> s'arrête si <em>Bizarre</em>
+boucle...<br />
+
+<p>
+Nous trouvons là une reformulation du paradoxe du barbier : dans une
+ville où les gens soit se rasent eux-mêmes, soit se font raser par le
+barbier, qui rase le barbier ?
+Soit il se rase lui-même et, dans ce cas, il n'est pas rasé par le
+barbier, soit il ne se rase pas lui même et nous en déduisons qu'il
+est rasé par le barbier. Reformulé, cela nous donne : 
+soit il se rase lui-même et donc il ne se rase pas lui-même, soit il
+ne se rase pas lui-même et donc il se rase lui-même.
+</p>
+<p>
+Nous devons conclure qu'une telle ville avec de tels habitants ne peut
+exister et, de la même manière, l'algorithme <em>TestArrêt</em> n'existe
+pas non plus.
+</p>
+<p>
+L'ensemble des algorithmes est dénombrable, l'ensemble des problèmes
+ne l'est pas : tout deux sont de taille infinie mais le second est
+tout de même beaucoup plus grand que le premier.
+</p>
+
+
+
+
+<nav class="smalltoc">
+<h1><span>&nbsp;Sommaire&nbsp;</span></h1>
+<ul>
+<li> <a href="#intro">Présentation</a></li>
+<li> <a href="#langage">Langage de description</a></li>
+<li> <a href="#abstraits">Types abstraits</a></li>
+<li> <a href="#tableaux">Algorithmes sur les tableaux</a></li>
+<li> <a href="#dur">Complexité exponentielle et indécidabilité</a></li>
+<li> <a href="#conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</section>
+
+
+
+<section>
+<h2 id="conclusion">Conclusion</h2>
+
+<p>
+Nous avons donné des algorithmes pour différents problèmes, en
+particulier des algorithmes de tri de tableaux.<br />
+</p><p>
+Nous avons vu des problèmes plus difficiles :
+</p>
+
+<ul>
+<li> soit nous avons des algorithmes mais qui ne permettent pas de
+ traitement du problème dans un temps raisonnable (complexité
+ exponentielle) ;
+</li>
+
+<li> soit nous avons montré qu'il n'existe aucun algorithme pour
+ certains problèmes (indécidabilité).
+</li>
+
+</ul>
+
+</section>
+
+</article>
+
+
+<div class="boite">
+<nav class="neighbours">
+<div>
+<img src="include/top.png" alt="&lt;-" class="navig" />&nbsp;
+<a href="http://www.grappa.univ-lille3.fr/~torre/Enseignement/Cours/base.php" onmouseover="showfather()" onmouseout="hide()" title="Cours élémentaires en informatique">Informatique de base</a>
+</div>
+<div>
+<img src="include/left.png" alt="&lt;-" class="navig" />&nbsp;
+<a href="http://www.grappa.univ-lille3.fr/~torre/Enseignement/Cours/Codages/" onmouseover="showbrother(0)" onmouseout="hide()" title="Codages binaires et autres codages">Codages</a>
+</div>
+<div>
+<img src="include/right.png" alt="-&gt;" class="navig" />&nbsp;
+<a href="http://www.grappa.univ-lille3.fr/~torre/Enseignement/Cours/bd.php" onmouseover="showbrother(1)" onmouseout="hide()" title="Notes de cours sur les bases de données">Bases de données</a>
+</div>
+</nav>
+</div>
+</main>
+</div>
+</div>
+</body>
+</html>
