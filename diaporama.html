@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<style>
+img {
+  height: 200px;
+}
+</style>
+
+<script>
+
+var images = ['navi.jpg', 'panther.jpg', 'mona.jpg', 'fox.jpg', 'skull.jpg', 'queen.jpg'];
+
+var encours = 0;
+var ticket;
+
+function change_image () {
+ encours = encours + 1;
+ if (encours==images.length) {
+	encours = 0 ;
+ }
+ document.getElementById('ecran').src = images[encours];
+}
+
+</script>
+</head>
+<body onkeypress="if (event.key=='Enter') {change_image();}">
+
+<h1>Diaporama</h1>
+
+<img id="ecran" src="navi.jpg" alt="Persona !"/><br/>
+
+<button onclick="change_image();">Next suspect</button>
+
+</body>
+</html>
