@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+<meta charset="utf-8"/>
+</head>
+
+<script>
+
+var opacite = 1;
+
+function Fondu() {
+opacite = opacite - 0.05;
+document.getElementById('ecran').style.opacity = opacite;
+}
+
+
+</script>
+
+<body>
+
+<h1>Disparition avec fondu</h1>
+
+<img id="ecran" src="morgana.png" height= "300px" onmouseover="document.getElementById('ecran').style.opacity = 1; opacite = 1;"/><br/>
+
+<!-- <button onclick="Fondu();">Clic clic</button> -->
+<button onclick="setInterval('Fondu()',100);">Phantom&nbsp;!</button>
+
+
+</body>
+
+</html>
