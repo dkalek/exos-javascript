@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+
+<script>
+
+var loutreen = 'otter';
+
+document.writeln('<p>11</p>');
+document.writeln('<p>Les loutres sont fantastiques.</p>');
+document.writeln('<p>En anglais, "loutre" se dit&nbsp;: ',loutreen,'.</p>');
+document.writeln('<p>La valeur de pi est ',Math.PI,'.</p>');
+
+document.writeln('<p>Le chiffre du jour est ',Math.round(Math.random()*100),', c\'est super&nbsp;!</p>');
+
+var temp = 40;
+var seuil = 25;
+if (temp >= seuil) {
+	document.writeln('<p>Il fait ',temp,' degrés, j\'ai trop chaud&nbsp;!</p>');
+}
+else {
+	document.writeln('<p>Il fait ',temp,' degrés, je n\'ai pas trop chaud.</p>');
+}
+
+var i = 0;
+while(i < 100){
+	i = i + 1;
+	document.writeln(i,' ');
+}
+
+document.writeln('<br>')
+
+for (var x = 1 ; x <= 100 ; x = x + 1){
+	document.writeln(x,' ');
+}
+
+
+
+function uneLigne (n) {
+	for (var l = 1 ; l <= n ; l = l + 1) {
+		document.write('*');
+	}
+}
+
+function unCarre (n) {
+	document.write('<table border="1">');
+	for (var v = 1 ; v <= n ; v = v + 1) {
+		document.write('<tr>');
+			for (var w = 1 ; w <= n ; w = w + 1) {
+				document.write('<td>');
+				document.write('*');
+				document.write('</td>');
+			}
+	document.write('</tr>');
+	}
+document.write('</table>');	
+}
+
+function unTriangle (n) {
+	document.write('<table>');
+	for (var b = 1 ; b <= n ; b = b + 1) {
+		document.write('<tr>');
+			for (var w = 1 ; w <= b ; w = w + 1) {
+				document.write('<td>');
+				document.write('*');
+				document.write('</td>');
+			}
+	document.write('</tr>');
+	}
+document.write('</table>');	
+}
+
+function tableMultiplication (n) {
+	document.write('<table border="1">');
+	for (var a = 0 ; a <= n ; a = a + 1) {
+		document.write('<tr>');
+			for (var c = 0 ; c <= n ; c = c + 1) {
+				document.write('<td>');
+				document.write(a*c);
+				document.write('</td>');
+			}
+	document.write('</tr>');
+	}
+document.write('</table>');	
+}
+
+
+document.writeln('<br><br>');
+uneLigne(10);
+document.writeln('<br><br>');
+unCarre(10);
+document.writeln('<br><br>');
+unTriangle(10);
+document.write('<br><br>');
+tableMultiplication(9)
+
+
+function francsEuros (n) {
+	document.write(n,' francs = ',n*0.1524,' euros.');
+}
+
+document.writeln('<br><br>');
+francsEuros(500);
+document.writeln('<br>');
+francsEuros(3000);
+document.writeln('<br>');
+francsEuros(376452);
+
+document.writeln('<h1>Nom d\'agent</h1>');
+
+var verbe = 'chanter';
+var radical = verbe.substr(0,verbe.length-2);
+var nom = radical+'eur';
+document.writeln('verbe «&nbsp;',verbe,'&nbsp;»');
+document.writeln('radical «&nbsp;',radical,'&nbsp;»');
+document.writeln('nom «&nbsp;',nom,'&nbsp;»');
+
+var verbes = ['chanter','danser','râler'];
+document.writeln('<ul>');
+for (var k=0 ; k<verbes.length ; k=k+1) {
+	var verbe = verbes[k];
+	var radical = verbe.substr(0,verbe.length-2);
+	var nom = radical+'eur';
+	document.writeln('verbe «&nbsp;',verbe,'&nbsp;»');
+	document.writeln('radical «&nbsp;',radical,'&nbsp;»');
+	document.writeln('nom «&nbsp;',nom,'&nbsp;»');
+}
+document.writeln('</ul>');
+
+</script>
+
+</body>
+
+<html>

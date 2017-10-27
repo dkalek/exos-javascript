@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr"/>
+
+<head>
+
+	<meta charset="utf-8"/>
+
+<style>
+img {height: 300px;}
+</style>
+
+<script>
+
+	var enCours = 'boite';
+	var ticket;
+
+	function changeImage () {
+		if (enCours == 'otters') {
+		document.getElementById('ecran').src='otter-boite.jpg';
+		enCours = 'boite';
+		} else {
+			document.getElementById('ecran').src='otters.jpg';
+			enCours = 'otters';
+			}
+	}
+
+</script>
+
+</head>
+
+<body>
+
+<img id="ecran" src="otter-boite.jpg" onclick="alert('loutres')" /><br/>
+
+
+<button onclick="changeImage();">Changer</button>
+<button onclick="ticket = setInterval('changeImage();',2000);">Change auto</button>
+<button onclick="clearInterval(ticket);">Stop</button>
+
+</body>
+</html>
