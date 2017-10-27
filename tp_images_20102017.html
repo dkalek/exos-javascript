@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr"/>
+
+<head>
+
+<meta charset="utf-8"/>
+
+<script>
+
+var image = 'visible';
+
+function disparitionImage () {
+	if (image == 'visible') {
+	document.getElementById('ecran').style.visibility='hidden';
+	image = 'invisible';
+	} else {
+	document.getElementById('ecran').style.visibility='visible';
+	image = 'visible';	
+	}
+}
+
+
+</script>
+
+</head>
+
+<body>
+
+<img id="ecran" src="morgana.png" height= "300px"/><br/>
+
+<button onclick="disparitionImage();">Phantom !</button>
+
+</body>
+
+
+
+</html>
