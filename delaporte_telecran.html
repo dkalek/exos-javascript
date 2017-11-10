@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" lang="fr"/>
+
+  <title>Télécran JavaScript</title>
+  
+  <script type="text/javascript">
+
+var canvas;
+var context;
+var x = 500;
+var y = 300;
+
+
+function carre () {
+  context.fillStyle = '#3D3D3D';
+  context.fillRect(x,y,2,2);
+}
+
+function dessine (e) {
+	if (e.key == 'ArrowRight') {
+		x = x+2;
+		carre();
+} else if (e.key == 'ArrowLeft') {
+		x = x-2;
+		carre();
+} else if (e.key == 'ArrowUp') {
+		y = y-2;
+		carre();
+} else if (e.key == 'ArrowDown') {
+		y=y+2;
+		carre();
+}
+}
+
+function efface_tout () {
+	context.clearRect(1,1,1000,600);
+}
+
+function initialisations () {
+	canvas = document.getElementById('canvas');
+	context = canvas.getContext("2d");
+	carre();
+}
+
+
+
+  </script>
+
+  <style>
+
+canvas {
+	border: solid 5px black;
+	background: #C8C3BD;
+}
+  </style>
+
+</head>
+
+<body onload="initialisations();" onkeypress="dessine(event);">
+<canvas id="canvas" width="1000" height="600"></canvas>
+<br/><button onclick="efface_tout();">Effacer</button>
+
+</body>
+
+
+</html>
