@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" lang="fr"/>
+
+  <title>Devine le mot</title>
+  
+  <script type="text/javascript">
+
+var canvas;
+var context;
+var mot = 'loutre';
+var definition = 'Carnivore mustélidé aquatique aux pattes palmées, mangeur de poissons.';
+var couleurs = ['yellow','pink','red','green','lightgreen','blue','cyan','purple'];
+var polices = ['30pt Arial','40pt Helvetica','16pt Times New Roman','36pt Courier New','22pt impact'];
+
+//context.fillStyle = ’black’;
+//context.font = "bold 15 px sans-serif";
+//context.fillText ( "-> coucou !",120,295);
+
+ 
+
+function initialisations () {
+	canvas = document.getElementById('canvas');
+	context = canvas.getContext("2d");
+
+	for (var i=0 ; i<mot.length ; i=i+1) {
+
+		var lettre = mot[i];
+
+        var x = 400*Math.random();
+        var y = 400*Math.random();
+		
+		var f = polices[Math.floor(polices.length*Math.random())];
+		
+		context.font = f;
+		
+		context.fillText(lettre,x,y);
+
+		var c = couleurs[Math.floor(couleurs.length*Math.random())];
+
+		context.fillStyle = c;	
+		
+
+		}
+
+}
+
+
+function verifierReponse () {
+	if (document.forms.reponse.tentative.value == 'loutre') {
+		alert('Bonne réponse !');
+	} else {alert('Raté !');}
+}
+
+  </script>
+
+<style>
+
+canvas {
+	border:solid 2px gray;
+}
+
+</style>
+
+</head>
+
+<body onload="initialisations();">
+
+<h1>Devine le mot</h1>
+
+<canvas id="canvas" width="400" height="400" ></canvas>
+
+<form name="reponse" onSubmit = verifierReponse(this.form);>
+   <input type="texte" name="tentative" value='Votre réponse' onFocus="if (this.value=='Votre réponse') {this.value=''}">
+</form>
+
+<button onclick="document.getElementById('def').innerHTML = definition;">Indice</button>
+<button onclick="document.getElementById('soluce').innerHTML = mot;">Solution</button>
+
+<p id="def"></p>
+
+<p id="soluce"></p>
+
+</body>
+
+</html>
