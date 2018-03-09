@@ -1,0 +1,11 @@
+#remplacer le contenu du body par le contenu de l'article
+a = document.getElementsByTagName('article')[0]
+b = document.getElementsByTagName('body')[0]
+b.innerHTML = a.innerHTML
+
+#ajouter un paragraphe fils de body
+t = document.createTextNode('Les Yokohama Baystars sont meilleurs que les LA Dodgers.')
+p = document.createElement('p')
+p.appendChild(t)
+document.body.appendChild(p) #devient le dernier fils
+document.body.insertBefore(p,document.body.firstChild) #s'insère avant le premier fils
