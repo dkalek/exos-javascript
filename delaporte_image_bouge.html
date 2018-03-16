@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" lang="fr"/>
+	<title>Sliding Labrys</title>
+	
+	<script type="text/javascript">
+	
+	var canvas;
+	var context;
+	
+	var x = -300;
+	var y = 50;
+	
+	var labrys = new Image();
+	labrys.src = 'P4Arena_Labrys.png';
+	
+	function initialisations () {
+	canvas = document.getElementById('canvas');
+	context = canvas.getContext("2d");
+	
+	setInterval('bouge_labrys();',30);
+	}
+	
+	function dessine_labrys () {
+  context.drawImage(labrys,x,y,320,160);
+}
+
+function efface_labrys () {
+  context.clearRect(x,y,320,160);
+}
+
+function bouge_labrys () {
+
+  efface_labrys();
+  x = x + 2;
+  if (x>=640) {
+    x = -320;
+  }
+
+  dessine_labrys();
+
+}
+	
+	</script>
+	
+	  <style>
+
+canvas {
+	border: solid 5px red;
+	
+}
+  </style>
+  
+  
+</head>
+
+<body onload="initialisations()";>
+
+<canvas id="canvas" width="1200" height="400"></canvas>
+
+
+</body>
+
+
+</html>
